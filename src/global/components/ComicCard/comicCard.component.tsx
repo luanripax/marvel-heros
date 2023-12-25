@@ -9,7 +9,7 @@ const ComicCard = ({name}: ComicCardProps) => {
   return (
     <View style={styles.comicBookContainer}>
       <View style={styles.comicCover}>
-        <SvgXml xml={svgList.comics} width={40} height={60} />
+        <SvgXml testID="logo" xml={svgList.comics} width={40} height={60} />
         <Text style={styles.title} ellipsizeMode="tail">
           {name}
         </Text>

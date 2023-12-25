@@ -1,6 +1,6 @@
 import {HeroDTOProps} from '../../../services/heroAPI.types';
 
 export interface HeroCardProps {
-  item: any;
+  item: HeroDTOProps;
   handleDetails: (item: HeroDTOProps) => void;
 }

@@ -6,7 +6,6 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
 import {fetchHeroes} from '../../store/heroes/heroes.actions';
 import {AppDispatch, RootState} from '../../store/store.index';
 import {useNavigation} from '@react-navigation/native';
@@ -17,17 +16,18 @@ import styles from './Home.styles';
 import Loading from '../../global/components/Loading/Loading.component';
 import {HomeScreenNavigationProp} from './Home.types';
 import {HeroDTOProps} from '../../services/heroAPI.types';
+import {useDispatch, useSelector} from 'react-redux';
 
 const Separator = () => <View style={styles.separator} />;
 
 const HomeScreen = () => {
-  const [page, setPage] = useState(0);
-  const [refreshing] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
+  const {navigate} = useNavigation<HomeScreenNavigationProp>();
   const {heroList, totalResults, error} = useSelector(
     (state: RootState) => state.heroes,
   );
-  const dispatch = useDispatch<AppDispatch>();
-  const {navigate} = useNavigation<HomeScreenNavigationProp>();
+  const [page, setPage] = useState(0);
+  const [refreshing] = useState(false);
 
   const hasNextPage = useMemo(() => {
     if (!totalResults) {
@@ -37,9 +37,10 @@ const HomeScreen = () => {
     }
   }, [totalResults, heroList]);
 
-  useEffect(() => {
-    hasNextPage && dispatch(fetchHeroes(page));
-  }, [page]);
+  const loadingFooter = useMemo(
+    () => (hasNextPage ? <Loading /> : null),
+    [hasNextPage],
+  );
 
   const handleRefresh = useCallback(() => {
     dispatch(reset());
@@ -49,7 +50,7 @@ const HomeScreen = () => {
 
   const handleEndReached = () => {
     if (heroList?.length && hasNextPage) {
-      setPage(prev => prev + 1);
+      setPage(prevPage => prevPage + 1);
     }
   };
 
@@ -57,18 +58,17 @@ const HomeScreen = () => {
     navigate('HeroDetail', {item});
   };
 
-  const renderItem = ({item}: {item: HeroDTOProps}) => (
-    <HeroCard item={item} handleDetails={handleDetails} />
-  );
-
   const handleTryAgain = () => {
     hasNextPage && dispatch(fetchHeroes(page));
   };
 
-  const loadingFooter = useMemo(
-    () => (hasNextPage ? <Loading /> : null),
-    [hasNextPage],
+  const renderItem = ({item}: {item: HeroDTOProps}) => (
+    <HeroCard item={item} handleDetails={handleDetails} />
   );
+
+  useEffect(() => {
+    hasNextPage && dispatch(fetchHeroes(page));
+  }, [page]);
 
   return (
     <View style={styles.container}>

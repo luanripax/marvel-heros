@@ -20,7 +20,11 @@ const HeroDetailScreen = () => {
         style={styles.content}
         contentContainerStyle={styles.contentContainer}>
         <Text style={styles.name}>{item?.name}</Text>
-        <Image source={{uri: item?.imageURL}} style={styles.image} />
+        <Image
+          testID="image"
+          source={{uri: item?.imageURL}}
+          style={styles.image}
+        />
         <Text style={styles.description}>
           {item?.description || 'No description provided'}
         </Text>
@@ -28,6 +32,7 @@ const HeroDetailScreen = () => {
         <View>
           <Text style={styles.comicsTitle}>{'Comics'}</Text>
           <FlatList
+            testID="comics"
             data={item?.comics}
             horizontal
             contentContainerStyle={styles.comicsContainer}

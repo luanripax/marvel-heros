@@ -5,15 +5,18 @@ import {HeroCardProps} from './heroCard.types';
 
 const HeroCard = ({item, handleDetails}: HeroCardProps) => (
   <TouchableOpacity
+    testID="container"
     activeOpacity={0.8}
     style={styles.container}
     onPress={() => handleDetails(item)}>
-    <Image source={{uri: item?.imageURL}} style={styles.image} />
+    <Image testID="image" source={{uri: item?.imageURL}} style={styles.image} />
     <View style={styles.infoContainer}>
       <Text style={styles.name}>{item?.name}</Text>
       <View style={styles.comicsContainer}>
         <Text style={styles.comicsLabel}>Comics:</Text>
-        <Text style={styles.comicsAmount}>{item?.comics?.length}</Text>
+        <Text testID="comicLength" style={styles.comicsAmount}>
+          {item?.comics?.length}
+        </Text>
       </View>
     </View>
   </TouchableOpacity>
