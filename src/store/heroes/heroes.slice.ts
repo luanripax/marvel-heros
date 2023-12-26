@@ -9,7 +9,7 @@ export interface HeroesState {
   error: boolean;
 }
 
-const initialState: HeroesState = {
+export const initialState: HeroesState = {
   heroList: [],
   totalResults: undefined,
   loading: 'idle',

@@ -30,3 +30,8 @@ export type HeroDTOProps = {
   description: string;
   comics: ComicSummary[];
 };
+
+export interface HeroAPIProps {
+  heroes: HeroDTOProps[];
+  totalResults: number;
+}
